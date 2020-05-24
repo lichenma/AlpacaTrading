@@ -46,6 +46,7 @@ Another thing to be aware of make sure that `python3` and `pip3` are being used 
 
 
 Now we can go ahead and start making trades by calling the Alpaca Trade API: 
+
 ```python
 api = tradeapi.REST(key_id=KEY_ID, secret_key=SECRET_KEY, base_url=BASE_URL, api_version='v2')
 
@@ -58,4 +59,18 @@ api.submit_order(
                 time_in_force='gtc'
 )
 ```
+
+Note that trades can only be completed when markets are open (9:30 a.m. - 4:00 p.m. Eastern Time) and this applies for paper trading as well - I believe it is possible to buy stocks during this time but they will be a long order that can only be sold when markets open again. 
+
+
+## Building Simple Command Line Interface 
+
+We initialize the API and make a check for if the market is still open: 
+
+```python 
+if not api.get_clock().is_open:
+    print('Market is closed.  Try again later.')
+    exit()
+```
+
 
